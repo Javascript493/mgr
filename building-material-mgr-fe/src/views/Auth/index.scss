@@ -1,0 +1,38 @@
+.bg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    // background-image: url('../../assets/building.jpg');
+    // background-size: cover;
+    // background-repeat: no-repeat;
+    // opacity: 1;
+    //background-color: rgba(224, 224, 224, 0.411);
+}
+
+.auth{
+    .title{
+        padding-bottom: 10px;
+        font-size: 25px;
+        color: rgb(0, 0, 0);
+    }
+    .title-info{
+        margin-top: 100px;
+        text-align: center;
+    }
+
+    .form{
+        width: 400px;
+        margin: 0 auto;
+
+        .item{
+            margin-bottom: 16px;
+
+            button{
+                width: 100%;
+            }
+        }
+    }
+
+}
