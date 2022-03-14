@@ -35,7 +35,7 @@
         </a-tab-pane>
         <a-tab-pane key="2" tab="注册">
           <div class="item">
-            <a-input placeholder="账户">
+            <a-input placeholder="账户" v-model:value="regForm.account">
               <template v-slot:prefix>
                 <UserOutlined />
               </template>
@@ -43,7 +43,7 @@
           </div>
 
           <div class="item">
-            <a-input placeholder="密码">
+            <a-input placeholder="密码" v-model:value="regForm.password">
               <template v-slot:prefix>
                 <LockOutlined />
               </template>
@@ -61,7 +61,7 @@
           <div class="item"></div>
 
           <div class="item">
-            <a-button type="primary"> 注册 </a-button>
+            <a-button type="primary" @click="register"> 注册 </a-button>
           </div>
         </a-tab-pane>
       </a-tabs>

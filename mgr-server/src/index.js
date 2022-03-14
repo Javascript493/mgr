@@ -1,28 +1,30 @@
-const koa=require('koa');
+const koa = require('koa');
+const koaBody = require('koa-body');
+// const Body = require('koa-body')
 
-const app=new koa();
+const { connect } = require('./db')
+//这里^ v 的代码顺序不能乱 因为要先注册UserSchema 然后 在去引用它 这样的逻辑
+const registerRouter = require('./routers')
+const cors = require('@koa/cors')
 
-//通过app.use注册一个中间件
-//中间件本质上 就是一个函数
-//context上下文  当前请求的相关信息都在里面
-app.use((context)=>{
-    //对象的解构赋值 冒号是对解构出的变量进行重新命名
-    const { request:req={} }=context;
-    const {url} =req;
+const app = new koa();
 
-    //路由 
-    if (url=='/user'){
-        context.response.body='<h1>哈哈哈哈<h1>';
+//先让数据库连接好
+connect().then(() => {
+    //处理跨域
+    app.use(cors());
+    //处理请求体
+    app.use(koaBody());
+    //注册路由
+    registerRouter(app);
 
-    }else{
-        context.body='???'
-    }
+    //开启一个http服务
+    //接收http请求 并做处理 然后响应
+    //这里是异步操作 先连端口再监听
+    app.listen(3000, () => {
+        console.log('启动成功')
+    });
 })
 
-app.listen(3000,()=>{
-    console.log('启动成功')
-});
 
-console.log('112233');
 
-//
