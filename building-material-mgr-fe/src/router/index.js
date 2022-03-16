@@ -8,6 +8,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "auth" */ '../views/Auth/index.vue'),
 
   },
+  {
+    path: '/',
+    name: 'BasicLayout',
+    component: () => import(/* webpackChunkName: "auth" */ '../layout/BasicLayout/index.vue'),
+    children:[{
+      path: 'main',
+      name: 'Main',
+      component: () => import(/* webpackChunkName: "main" */ '../views/Main/index.vue'),
+    }]
+  },
   // {
   //   path: '/about',
   //   name: 'about',
