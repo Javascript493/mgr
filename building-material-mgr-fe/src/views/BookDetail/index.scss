@@ -1,0 +1,17 @@
+.base-info{
+    ul{
+        padding-left: 0;
+        display: flex;
+        li{
+            flex:1;
+            display:flex;
+            .title{
+                font-weight: 700;
+                min-width: 60px;
+            }
+        }
+    }
+}
+.log{
+    margin-top: 24px;
+}

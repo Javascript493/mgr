@@ -1,5 +1,5 @@
 //公共模块 用来导入创建和修改的时间信息
-const getMate =()=>{
+const getMeta =()=>{
     return  {
         createAt:{
             type:Number,
@@ -11,7 +11,18 @@ const getMate =()=>{
         },
     }
 };
-
+const preSave=function(next){
+    if(this.isNew){
+        const ts = Date.now();
+        this['meta'].createAt=ts;
+        this['meta'].updateAt=ts;
+        
+    }else{
+        this['meta'].updateAt=Date.now();
+    }
+    //事情做完了 可以继续后面的事情了
+    next();
+};
 module.exports={
-    getMate,
+    getMeta,preSave
 };

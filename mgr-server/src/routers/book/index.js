@@ -2,13 +2,18 @@ const Router = require('@koa/router');
 const mongoose = require('mongoose')
 const { getBody } = require('../../helpers/utils')
 //拿到Schema下注册的User这个model
-const Book = mongoose.model('Book')
-//这里使用uuid来生成唯一的id
+const Book = mongoose.model('Book');
+const InventoryLog = mongoose.model( 'InventoryLog')
 
 const BOOK_CONST = {
     //入库和出库
     IN:'IN_COUNT',
     OUT:'OUT_COUNT'
+}
+//封装通过id来在数据库中查找某项数据的函数
+const findBookOne = async(id)=>{
+    const one = await Book.findOne({ _id : id,}).exec();
+    return one;
 }
 
 //表示当前的路由实例全部是处理auth相关请求的
@@ -67,7 +72,11 @@ router.get('/list',async(ctx)=>{
     }
 
     //跳过几条数据 要几条数据 来实现分页
-    const list = await Book.find(query).skip((page-1)*size).limit(size).exec();
+    const list = await Book.find(query)
+    .sort({
+        _id:-1
+    })
+    .skip((page-1)*size).limit(size).exec();
     //当前的集合一共有几条文档
     const total =await Book.countDocuments();
     ctx.body={
@@ -88,6 +97,7 @@ router.get('/list',async(ctx)=>{
 router.delete('/:id',async(ctx)=>{
     const { id } =ctx.params;
 
+    
     const delMsg = await Book.deleteOne({
         _id:id,
     }).exec();
@@ -98,15 +108,17 @@ router.delete('/:id',async(ctx)=>{
     };
 })
 
+//出入库的接口 同时将出入库的数据存入InventoryLog中去
 router.post('/update/count',async(ctx)=>{
     const { id , type } = ctx.request.body;
     // console.log(id)
     let { num } = ctx.request.body;
     num = Number(num);
 
-    const book = await Book.findOne({
-        _id:id,
-    }).exec();
+    const book = await findBookOne(id);
+    // const book = await Book.findOne({
+    //     _id:id,
+    // }).exec();
 
     if(!book){
         ctx.body={
@@ -135,6 +147,12 @@ router.post('/update/count',async(ctx)=>{
     //满足出入库的条件 save一下 同步到数据库
     const res = await book.save();
 
+    //存入出入库记录
+    const log = new InventoryLog({
+        num: Math.abs(num) ,type
+    });
+    log.save();
+
     ctx.body={
         data:res,
         code:1,
@@ -145,9 +163,10 @@ router.post('/update/count',async(ctx)=>{
 router.post('/update',async(ctx)=>{
     const {id,...others} = ctx.request.body;
 
-    const one = await Book.findOne({
-        _id:id,
-    }).exec();
+    const one = await findBookOne(id)
+    // const one = await Book.findOne({
+    //     _id:id,
+    // }).exec();
 
     if(!one){
         ctx.body = {
@@ -171,5 +190,24 @@ router.post('/update',async(ctx)=>{
         msg:'保存成功'
     }
 
-})
+});
+
+router.get('/detail/:id',async(ctx)=>{
+    const  { id } = ctx.params;
+    const one = await findBookOne(id);
+    if(!one ){
+        ctx.body={
+            msg:'没有找到材料',
+            code:0,
+        }
+        return;
+    }
+
+    ctx.body={
+        msg:'查询成功',
+        data:one,
+        code:1,
+
+    }
+});
 module.exports = router;

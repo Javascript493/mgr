@@ -36,6 +36,7 @@ export default defineComponent({
             });
             result(res)
                 .success(({ data,msg}) => {
+                    //触发父组件的update事件 并将data传过去
                     context.emit('update', data);
                     message.success(msg)
                     close();

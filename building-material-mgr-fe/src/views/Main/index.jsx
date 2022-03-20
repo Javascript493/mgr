@@ -1,6 +1,8 @@
 import { defineComponent, ref, onMounted, } from 'vue'
 import AddOne from './AddOne/index.vue'
 import { book } from '@/service'
+//useRoute提供当前页面与路由的信息prams等  useRouter提供操作路由的方法 如前进一页 后退一页
+import { useRouter } from 'vue-router'
 import { result, formatTimeStamp } from '@/helpers/utils'
 // import { BookFilled } from '@ant-design/icons-vue'
 import { message,Modal ,Input } from 'ant-design-vue'
@@ -10,6 +12,7 @@ import Update from './Update/index.vue'
 export default defineComponent({
     components: { AddOne,Update },
     setup() {
+        const router = useRouter();
         const columns = [
             {
                 title: '材料名',
@@ -162,13 +165,20 @@ export default defineComponent({
             });
         };
 
+        //点击编辑时触发的方法
         const update= ( { record })=>{
             showUpdateModal.value=true;
             curEditBook.value = record;
         }
-
+        //更新数据
         const updateCurBook = (newData)=>{
             Object.assign(curEditBook.value,newData);
+        };
+
+        //进入详情页面
+        const toDetail = ({record})=>{
+            //去下一页
+            router.push(`/main/${record._id}`);
         }
         return {
             columns,
@@ -187,7 +197,8 @@ export default defineComponent({
             showUpdateModal,
             update,
             curEditBook,
-            updateCurBook
+            updateCurBook,
+            toDetail
         
         }
     }

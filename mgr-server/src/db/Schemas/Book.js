@@ -1,5 +1,5 @@
 const mongoose =require('mongoose');
-const { getMate } =require('../helper')
+const { getMeta,preSave } =require('../helper')
 
 //schema是映射到数据库的文档应该有什么数据
 const BookSchema =new mongoose.Schema({
@@ -17,9 +17,11 @@ const BookSchema =new mongoose.Schema({
     //库存
     count:Number,
 
-    meta:getMate(),
+    meta:getMeta(),
 
 });
+//钩子 设置在保存之前要做什么事情 就是去更新这个meta时间 但是在当前schema有效
+BookSchema.pre('save',preSave);
 
 //-----注册Schema-------
 mongoose.model('Book',BookSchema);

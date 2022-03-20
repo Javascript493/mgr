@@ -71,7 +71,7 @@ router.post('/register', async (ctx) => {
 
     //将找到的验证码的user值改为 该用户的id
     finCode.user = res._id;
-    finCode.meta.updatedAt = new Date().getTime();
+    finCode.meta.updateAt = new Date().getTime();
     await finCode.save();
 
     //响应成功

@@ -12,11 +12,20 @@ const routes = [
     path: '/',
     name: 'BasicLayout',
     component: () => import(/* webpackChunkName: "auth" */ '../layout/BasicLayout/index.vue'),
-    children:[{
-      path: 'main',
-      name: 'Main',
-      component: () => import(/* webpackChunkName: "main" */ '../views/Main/index.vue'),
-    }]
+    children: [
+      {
+        path: 'main',
+        name: 'Main',
+        component: () => import(/* webpackChunkName: "main" */ '../views/Main/index.vue'),
+      },
+      {
+        path: 'main/:id',
+        name: 'mainDetail',
+        component: () => import(/* webpackChunkName: "mainDetail" */ '../views/BookDetail/index.vue'),
+      }
+
+
+    ]
   },
   // {
   //   path: '/about',
