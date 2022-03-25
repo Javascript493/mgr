@@ -1,9 +1,11 @@
-import { defineComponent ,ref ,onMounted} from "vue";
+import { defineComponent ,ref ,onMounted, reactive} from "vue";
 import { user } from '@/service'
 import { result ,formatTimeStamp} from "@/helpers/utils";
 import { message } from "ant-design-vue";
 import AddOne from "./AddOne/index.vue";
-
+import { getCharacterInfoById } from "@/helpers/character";
+import { EditOutlined } from '@ant-design/icons-vue'
+import store from "@/store";
 
 const columns = [
     {
@@ -17,6 +19,12 @@ const columns = [
         }
     },
     {
+        title:'角色',
+        slots:{
+            customRender:'character',
+        }
+    },
+    {
         title:'操作',
         slots:{
             customRender:'actions',
@@ -24,7 +32,7 @@ const columns = [
     },
 ]
 export default defineComponent({
-    components:{AddOne},
+    components:{AddOne,EditOutlined},
 
     setup(){
         const list = ref([]);
@@ -33,6 +41,12 @@ export default defineComponent({
         const showAddModal = ref(false);
         const keyword = ref('');
         const isSearch = ref(false);
+        const showEditCharacterModal = ref(false);
+
+        const editForm = reactive({
+            character:'',
+            current:{},
+        })
 
 
         //获取用户列表的方法
@@ -88,6 +102,28 @@ export default defineComponent({
             isSearch.value = false;
             getUser();
         }
+
+        //改变角色的事件
+        const onEdit = (record)=>{
+            //拿到当前编辑的用户的信息
+            editForm.current = record;
+            //显示当前修改的用户的角色是什么
+            editForm.character = record.character
+
+            showEditCharacterModal.value = true;
+        }
+
+        // 点击确认修改用户角色的逻辑
+        const updateCharacter = async()=>{
+            //参数分别为 要修改成什么角色？ 和当前用户真正的用户信息
+            const res = await user.editCharacter(editForm.character,editForm.current._id);
+            result(res)
+            .success(( {msg })=>{
+                message.success(msg);
+                showEditCharacterModal.value = false;
+                editForm.current.character = editForm.character
+            })
+        }
         return {
             list,
             curPage,
@@ -101,9 +137,14 @@ export default defineComponent({
             resetPassword,
             onSearch,
             searchBack,
+            onEdit,
             keyword,
             isSearch,
-
+            getCharacterInfoById,
+            showEditCharacterModal,
+            editForm,
+            characterInfo : store.state.characterInfo,
+            updateCharacter
         }
     }
 });

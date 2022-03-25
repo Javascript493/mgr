@@ -1,10 +1,13 @@
 import{defineAsyncComponent, defineComponent , reactive} from 'vue';
 import{UserOutlined,LockOutlined,SmileOutlined }from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
 //引入登录和注册 请求的相关逻辑
 import { auth } from '@/service';
 import { result } from '@/helpers/utils'
 import { message } from 'ant-design-vue';
-
+import store from '@/store';
+import { getCharacterInfoById } from '@/helpers/character';
+import { setToken } from '@/helpers/token';
 
 
 export default defineComponent({
@@ -15,6 +18,8 @@ export default defineComponent({
       SmileOutlined,
    },
    setup(){
+      const router = useRouter();
+
       //注册用的表单数据
       const regForm =reactive({
          account:'',
@@ -61,8 +66,18 @@ export default defineComponent({
          
          const res = await auth.login(loginForm.account,loginForm.password);
          result(res)
-         .success((data)=>{
-            message.success(data.msg)
+         .success(({ msg, data: { user ,token}})=>{
+            message.success(msg)
+            //登录成功后将用户信息传入store
+
+            //将用户数据作为全局数据
+            store.commit('setUserInfo',user);
+            //根据用户的character属性 来查询用户是管理员还是普通用户，并获得相关权限信息
+            store.commit('setUserCharacter',getCharacterInfoById(user.character));
+
+            setToken(token);
+            router.replace('/main')
+
          });
       }
 

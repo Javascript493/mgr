@@ -5,8 +5,8 @@ const { getBody } = require('../../helpers/utils')
 const jwt = require('jsonwebtoken')
 const User = mongoose.model('User')
 const InviteCode =mongoose.model('InviteCode')
-
-
+const config = require('../../project.config')
+const {verify } = require('../../helpers/token')
 
 //表示当前的路由实例全部是处理auth相关请求的
 const router = new Router({
@@ -116,7 +116,9 @@ router.post('/login', async (ctx) => {
     const user = {
         account: one.account,
         //这个_id是mongodb自己生成的
-        id: one._id
+        id: one._id,
+        character:one.character,
+
     };
     if (one.password === password) {
         ctx.body = {
@@ -124,7 +126,7 @@ router.post('/login', async (ctx) => {
             msg: '登入成功',
             data: {
                 user: user,
-                token: jwt.sign({user}, '666'),
+                token: jwt.sign( user, config.JWT_SECRET),
             }
         }
         return;
@@ -136,5 +138,6 @@ router.post('/login', async (ctx) => {
         data: null
     };
 });
+
 
 module.exports = router;
