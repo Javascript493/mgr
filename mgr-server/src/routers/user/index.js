@@ -5,6 +5,8 @@ const { getToken ,verify} = require('../../helpers/token');
 const User = mongoose.model('User')
 const Character = mongoose.model('Character')
 const config = require('../../project.config')
+
+
 const router = new Router({
     prefix:'/user',
 });
@@ -155,6 +157,7 @@ router.post('/update/character',async (ctx)=>{
 });
 
 router.get('/info',async(ctx)=>{
+
     ctx.body = {
         //解析token
         code:1,

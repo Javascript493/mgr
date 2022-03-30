@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-only-admin>
     <a-card>
       <h2>用户管理</h2>
 

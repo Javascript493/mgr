@@ -4,6 +4,7 @@ const book = require('./book')
 const inventoryLog = require('./Inventory-log')
 const user = require('./user')
 const character = require('./character')
+const log =require('./log')
 //注册路由
 module.exports=(app)=>{
     app.use(auth.routes());
@@ -12,4 +13,5 @@ module.exports=(app)=>{
     app.use(inventoryLog.routes())
     app.use(user.routes())
     app.use(character.routes())
+    app.use(log.routes())
 };  

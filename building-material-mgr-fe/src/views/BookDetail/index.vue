@@ -3,7 +3,7 @@
     <a-card>
       <space-between>
         <h2>{{ d.name }}</h2>
-        <div>
+        <div v-only-admin>
           <a-button size="small" type="prima" @click="showUpdateModal = true"
             >编辑</a-button
           >

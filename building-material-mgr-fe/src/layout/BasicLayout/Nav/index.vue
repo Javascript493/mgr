@@ -1,5 +1,36 @@
 <template>
-    <div>
+  <div>
+    <a-menu
+      style="width: 100%"
+      v-model:openKeys="openKeys"
+      v-model:selectedKeys="selectedKeys"
+      mode="inline"
+      v-for="item in menu " :key="item.url"
+      v-only-admin="item.onlyAdmin"
+    >
+      <a-sub-menu v-if="item.children">
+        <template #icon>
+          <MailOutlined />
+        </template>
+        <template #title>{{item.title}}</template>
+
+        <!-- <a-menu-item-group key="g1">
+          <template #icon>
+            <QqOutlined />
+          </template>
+          <template #title>Item 1</template>
+          <a-menu-item key="1">Option 1</a-menu-item>
+          <a-menu-item key="2">Option 2</a-menu-item>
+        </a-menu-item-group> -->
         
-    </div>
+      </a-sub-menu>
+
+        <a-menu-item @click="to(item.url)" :key="item.url" v-else>
+            {{item.title}}
+        </a-menu-item>
+    </a-menu>
+  </div>
 </template>
+
+
+<script src="./index.js"></script>

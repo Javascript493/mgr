@@ -4,6 +4,8 @@ require('./Schemas/InviteCode');
 require('./Schemas/Book');
 require( './Schemas/InventoryLog')
 require('./Schemas/Character')
+require('./Schemas/Log')
+
 
 const mongoose = require('mongoose');
 

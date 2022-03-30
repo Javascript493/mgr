@@ -5,10 +5,13 @@ import store from './store';
 import Antd from 'ant-design-vue';
 import SpaceBetween from './components/SpaceBetween/index.vue'
 import FlexEnd from './components/FlexEnd/index.vue'
-
+import { regDirectives } from './helpers/directive';
 import 'ant-design-vue/dist/antd.css';
 
-createApp(App)
+const app = createApp(App);
+regDirectives(app);
+
+app
 .use(store)
 .use(router)
 .use(Antd)
