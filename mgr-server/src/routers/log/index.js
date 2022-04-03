@@ -19,7 +19,12 @@ router.get('/list',async(ctx)=>{
     page = Number(page);
     size = Number(size);
 
-    const list = await Log.find()
+    const list = await Log.find({
+        show: true,
+    })
+    // .sort({
+    //     _id:-1
+    // })
      .skip((page-1)*size)
      .limit(size)
      .exec();
@@ -31,6 +36,28 @@ router.get('/list',async(ctx)=>{
         data:{list,page,size,total},
         msg:'获取列表成功'
 
+    }
+});
+
+router.post('/delete',async(ctx)=>{
+    const { id } = ctx.request.body;
+
+    const one = await Log.findOne({_id:id }).exec();
+    if(!one){
+        ctx.body = {
+            code:0,
+            data:{},
+            msg:'删除成功'
+        }
+    }
+
+    one.show = false;
+
+    await one.save();
+
+    ctx.body = {
+        code : 1,
+        msg:'删除成功',
     }
 })
 

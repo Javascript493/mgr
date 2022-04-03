@@ -1,6 +1,7 @@
 import { defineComponent, ref, onMounted, } from 'vue'
 import AddOne from './AddOne/index.vue'
-import { book } from '@/service'
+import { book ,classify} from '@/service'
+import { getClassifyTitleById } from '@/helpers/book-classify'
 //useRoute提供当前页面与路由的信息prams等  useRouter提供操作路由的方法 如前进一页 后退一页
 import { useRouter } from 'vue-router'
 import { result, formatTimeStamp } from '@/helpers/utils'
@@ -36,7 +37,9 @@ export default defineComponent({
             },
             {
                 title: '分类',
-                dataIndex: 'classify'
+                slots: {
+                    customRender: 'classify'
+                }
             },
             {
                 title: '生产日期',
@@ -61,7 +64,11 @@ export default defineComponent({
         const keyword =ref('');
         const list = ref([]);
         const isSearch = ref(false);
-        const curEditBook = ref({})
+        const curEditBook = ref({});
+        // const classifyList = ref([]);
+
+
+        //拿到自定义的分类列表
 
         //获取书籍列表
         const getList = async() => {
@@ -79,6 +86,7 @@ export default defineComponent({
         }
 
         onMounted(async () => {
+            // await getClassify();
             getList();
         });
 
@@ -109,12 +117,6 @@ export default defineComponent({
             result(res)
             .success(({ msg })=>{
                 message.success(msg);
-
-                // const idx = list.value.findIndex((item)=>{
-                    
-                //     return item._id=== _id;
-                // });
-                // list.value.splice(idx,1)
                 getList();
             })
         }
@@ -198,7 +200,9 @@ export default defineComponent({
             update,
             curEditBook,
             updateCurBook,
-            toDetail
+            toDetail,
+            getList,
+            getClassifyTitleById
         
         }
     }

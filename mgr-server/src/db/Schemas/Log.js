@@ -11,13 +11,15 @@ const LogSchema =new mongoose.Schema({
     request:{
         method:String,
         url:String,
-        body:String,
+        status:Number,
     },
     
+    startTime:Number,
+    endTime:Number,
+    show:Boolean,
     meta:getMeta(),
 
 });
 LogSchema.pre('save',preSave)
-//-----注册UserSchema-------
-//定义一个模型 名字叫User 传入UserSchema
+
 mongoose.model('Log',LogSchema);

@@ -1,10 +1,10 @@
 import{defineAsyncComponent, defineComponent , reactive} from 'vue';
 import{UserOutlined,LockOutlined,SmileOutlined }from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter} from 'vue-router';
 //引入登录和注册 请求的相关逻辑
-import { auth } from '@/service';
+import { auth ,resetPassword} from '@/service';
 import { result } from '@/helpers/utils'
-import { message } from 'ant-design-vue';
+import { message ,Modal,Input} from 'ant-design-vue';
 import store from '@/store';
 import { getCharacterInfoById } from '@/helpers/character';
 import { setToken } from '@/helpers/token';
@@ -25,7 +25,28 @@ export default defineComponent({
          account:'',
          password:'',
          inviteCode:''
-      })
+      });
+      const forgetPassword =()=>{
+         Modal.confirm({
+            title: `请输入申请重置密码的账号`,
+            content :(
+                <div style="margin-top:16px">
+                    <Input class="__forget_Password_account"/>
+                </div>
+            ),
+
+            onOk: async()=>{
+                const el = document.querySelector('.__forget_Password_account');
+                let account = el.value;
+               // console.log(account);
+               const res = await resetPassword.add(account)
+               result(res)
+               .success(({msg})=>{
+                  message.success(msg)
+               });
+            }
+        });
+      }
       //注册用的相关逻辑
       const register =async ()=>{
          if(regForm.account === ''){
@@ -69,17 +90,38 @@ export default defineComponent({
          .success(({ msg, data: { user ,token}})=>{
             message.success(msg)
             //登录成功后将用户信息传入store
+            // store.commit('setUserInfo',user);
+            // store.commit('setUserCharacter',getCharacterInfoById(user.character));
 
+            // setToken(token);
+            // router.replace('/main');
+
+            const p = new Promise((resolve)=>{
+               // store.commit('setUserInfo',user);
+               // store.commit('setUserCharacter',getCharacterInfoById(user.character));
+               store.dispatch('setUserInfo',user)
+               store.dispatch('setUserCharacter',getCharacterInfoById(user.character))
+               resolve();
+                
+            });
             //将用户数据作为全局数据
-            store.commit('setUserInfo',user);
+            
             //根据用户的character属性 来查询用户是管理员还是普通用户，并获得相关权限信息
-            store.commit('setUserCharacter',getCharacterInfoById(user.character));
+            p.then(async()=>{
+               await setToken(token);
+               
+               await router.replace('/main');
+            });
 
-            setToken(token);
-            router.replace('/main')
+            
 
          });
-      }
+      };
+
+      // onBeforeRouteLeave((to ,from ,next)=>{
+      //    console.log(store.state)
+      //    next();
+      // });
 
       return {
          //注册相关数据
@@ -88,6 +130,7 @@ export default defineComponent({
          //登入相关的数据
          login,
          loginForm,
+         forgetPassword
       }
    }
 });

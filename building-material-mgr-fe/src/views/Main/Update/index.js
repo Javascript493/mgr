@@ -2,6 +2,7 @@ import { defineComponent, reactive, watch } from 'vue';
 import { book } from '@/service';
 import { result, clone } from '@/helpers/utils'
 import { message } from 'ant-design-vue'
+import store from '@/store';
 import moment from 'moment';
 export default defineComponent({
     props: {
@@ -43,7 +44,7 @@ export default defineComponent({
                 })
         }
         return {
-            editForm, submit, props, close,
+            editForm, submit, props, close,store:store.state
         }
 
     }

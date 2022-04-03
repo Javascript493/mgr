@@ -9,11 +9,17 @@
       v-only-admin="item.onlyAdmin"
     >
       <a-sub-menu v-if="item.children">
-        <template #icon>
+        <!-- <template #icon>
           <MailOutlined />
-        </template>
+        </template> -->
         <template #title>{{item.title}}</template>
 
+        <a-menu-item 
+        v-for="(child) in item.children" 
+        :key="child.url" 
+        @click="to(child.url)">
+            {{child.title}}
+        </a-menu-item>
         <!-- <a-menu-item-group key="g1">
           <template #icon>
             <QqOutlined />

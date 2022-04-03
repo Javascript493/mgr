@@ -13,11 +13,15 @@
         <a-form-item label="材料名">
           <a-input  v-model:value="addForm.name" />
         </a-form-item>
-        <a-form-item label="价格"  >
+        <a-form-item label="价格" >
           <a-input-number :min="0" :max="9999"  v-model:value="addForm.price"/>
         </a-form-item>
         <a-form-item label="分类" >
-          <a-input v-model:value="addForm.classify" />
+          <a-select v-model:value="addForm.classify" style="width:120px">
+            <a-select-option v-for="item in store.classify" :key="item._id" :value="item._id">
+              {{item.title}}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="操作者" >
           <a-input v-model:value="addForm.author" />

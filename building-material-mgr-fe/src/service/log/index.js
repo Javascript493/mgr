@@ -8,4 +8,11 @@ export const list = (page,size)=>{
             size,
         }
     });
+
+}
+
+export const remove =(id)=>{
+    axios.post('http://localhost:3000/log/delete',{
+        id,
+    });
 }

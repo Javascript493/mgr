@@ -11,7 +11,8 @@ export default defineComponent({
         const selectedKeys = ref([]);
 
         onMounted(()=>{
-            selectedKeys.value = [route.path]
+            selectedKeys.value = [route.path];
+            
         });
         const to =(url)=>{
             router.push(url);

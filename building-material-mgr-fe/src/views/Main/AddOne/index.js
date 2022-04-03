@@ -2,7 +2,7 @@ import { defineComponent, reactive ,ref} from 'vue';
 import { book } from '@/service';
 import { result ,clone} from '@/helpers/utils'
 import { message } from 'ant-design-vue'
-
+import store from '@/store';
 const defaultFormData ={
     name:'',
     price:0,
@@ -15,10 +15,14 @@ const defaultFormData ={
 export default defineComponent({
     props:{
         show:Boolean,
+        classifyList:Array
     },
     setup(props,context){
         const addForm = reactive( clone(defaultFormData) );
 
+        if(store.state.classify.length){
+            addForm.classify = store.state.classify[0]._id;
+        }
         const submit =async ()=>{
             const form = clone(addForm);
             form.publishDate = addForm.publishDate.valueOf();
@@ -29,7 +33,9 @@ export default defineComponent({
             .success((d,{ data })=>{
                 //清空表单
                 Object.assign(addForm,defaultFormData);
-                message.success(data.msg)
+                message.success(data.msg);
+
+                context.emit('getList');
             })
         };
 
@@ -39,7 +45,7 @@ export default defineComponent({
         }
         
         return{
-            addForm,submit,props,close
+            addForm,submit,props,close, store:store.state,
         }
 
     }

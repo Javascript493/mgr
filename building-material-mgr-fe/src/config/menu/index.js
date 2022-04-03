@@ -15,5 +15,27 @@ export default [
         url:'/log',
         onlyAdmin: true,
 
+    },
+    {
+        title:'更多操作',
+        onlyAdmin: false,
+        children:[
+            {
+                title:'材料分类管理',
+                url:'/classify',
+                onlyAdmin: true,
+            },
+            {
+                title:'重置密码列表',
+                url:'/rest/password',
+                onlyAdmin: true,
+            },
+            {
+                title:'邀请码管理',
+                url:'/invite-code',
+                onlyAdmin: true,
+            }
+        ]
+
     }
 ]

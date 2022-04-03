@@ -32,6 +32,21 @@ const routes = [
         path: 'log',
         name: 'Log',
         component: () => import(/* webpackChunkName: "log" */ '../views/Log/index.vue'),
+      },
+      {
+        path: 'rest/password',
+        name: 'ResetPassword',
+        component: () => import(/* webpackChunkName: "resetPassword" */ '../views/ResetPassword/index.vue'),
+      },
+      {
+        path: 'invite-code',
+        name: 'InviteCode',
+        component: () => import(/* webpackChunkName: "InviteCode" */ '../views/InviteCode/index.vue'),
+      },
+      {
+        path: 'classify',
+        name: 'Classify',
+        component: () => import(/* webpackChunkName: "Classify" */ '../views/Classify/index.vue'),
       }
 
 
@@ -50,18 +65,26 @@ const router = createRouter({
 });
 
 router.beforeEach(async(to,from,next)=>{
-  const reqArr = [];
+
 
   if(!store.state.characterInfo.length){
-    reqArr.push(store.dispatch('getCharacterInfo'));
+    await store.dispatch('getCharacterInfo');
   }
-  if(!store.state.characterInfo.account){
+
+  const reqArr = [];
+
+  if(!store.state.userInfo.account){
     reqArr.push(store.dispatch('getUserInfo'));
 
   }
 
-  await Promise.all(reqArr);
-  
+  if(!store.state.classify.length){
+
+    reqArr.push(store.dispatch('getClassify'));
+  }
+
+  await Promise.all(reqArr)
+  // await Promise.all(reqArr);
   next();
 });
 
