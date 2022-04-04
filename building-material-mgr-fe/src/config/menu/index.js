@@ -34,6 +34,11 @@ export default [
                 title:'邀请码管理',
                 url:'/invite-code',
                 onlyAdmin: true,
+            },
+            {
+                title:'个人设置',
+                url:'/profile',
+                onlyAdmin: false,
             }
         ]
 

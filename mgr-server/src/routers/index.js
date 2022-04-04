@@ -7,6 +7,7 @@ const character = require('./character')
 const log =require('./log')
 const forgetPassword = require('./forget-password')
 const classify = require('./classify')
+const profile = require('./profile')
 //注册路由
 module.exports=(app)=>{
     app.use(auth.routes());
@@ -18,5 +19,6 @@ module.exports=(app)=>{
     app.use(log.routes());
     app.use(forgetPassword.routes());
     app.use(classify.routes());
+    app.use(profile.routes());
     
 };  

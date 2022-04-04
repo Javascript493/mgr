@@ -47,6 +47,11 @@ const routes = [
         path: 'classify',
         name: 'Classify',
         component: () => import(/* webpackChunkName: "Classify" */ '../views/Classify/index.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import(/* webpackChunkName: "Profile" */ '../views/Profile/index.vue'),
       }
 
 
