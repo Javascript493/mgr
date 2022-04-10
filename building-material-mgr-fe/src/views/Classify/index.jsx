@@ -64,7 +64,6 @@ export default defineComponent({
                         <Input class="__classify_new_title"/>
                     </div>
                 ),
-    
                 onOk: async()=>{
                     const title = document.querySelector('.__classify_new_title').value;
                     const res = await classify.updateTitle(_id,title);

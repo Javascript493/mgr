@@ -34,7 +34,36 @@ const columns = [
 ]
 
 export default defineComponent({
-    setup(){
+    props:{
+        simple:Boolean
+    },
+
+    setup(props){
+        const columns = [
+            {
+                title: '用户名',
+                dataIndex: 'user.account'
+            },
+            {
+                title: '动作',
+                dataIndex: 'action'
+            },
+            {
+                title: '记录时间',
+                slots: {
+                    customRender: 'createdAt'
+                    }
+            },
+
+        ]
+        if(!props.simple){
+            columns.push(            {
+                title: '操作',
+                slots: {
+                    customRender: 'action'
+                    }
+            })
+        }
 
         const curPage = ref(1);
         const total = ref(0);
@@ -73,7 +102,7 @@ export default defineComponent({
             result(res)
              .success(({msg })=>{
                  message.success(msg)
-             })
+             });
         }
         return {
             curPage,
@@ -83,7 +112,8 @@ export default defineComponent({
             setPage,
             loading,
             formatTimeStamp,
-            remove
+            remove,
+            simple:props.simple
         }
 
     }

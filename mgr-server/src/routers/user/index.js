@@ -5,7 +5,7 @@ const { getToken ,verify} = require('../../helpers/token');
 const User = mongoose.model('User')
 const Character = mongoose.model('Character')
 const config = require('../../project.config')
-
+const { loadExcel , getFirstSheet } = require('../../helpers/excel')
 
 const router = new Router({
     prefix:'/user',
@@ -91,6 +91,33 @@ router.post('/add',async(ctx)=>{
 
 });
 
+//用户批量添加的接口
+router.post('/addMany',async(ctx)=>{
+    const { key='' } = ctx.request.body;
+    const path = `${config.UPLOAD_DIR}/${key}`;
+
+    const excel = loadExcel(path);
+    const sheet = getFirstSheet(excel);
+    const character = await Character.find().exec();
+    const member = character.find((item)=>(item.name === 'member'));
+    const arr = [];
+    sheet.forEach((record)=>{
+        const [account ,password=config.DEFAULT_PASSWORD] = record;
+
+        arr.push({
+            account,
+            password: password || '123123',
+            character:member._id,
+        });
+    });
+    await User.insertMany(arr);
+
+    ctx.body ={
+        code:1,
+        msg:'添加成功',
+    }
+});
+
 router.post('/reset/password',async(ctx)=>{
     const { id } = ctx.request.body;
     const user = await User.findOne({ _id:id }).exec();
@@ -159,9 +186,9 @@ router.post('/update/character',async (ctx)=>{
 router.get('/info',async(ctx)=>{
 
     ctx.body = {
-        //解析token
         code:1,
         msg:'获取成功',
+       //解析token
         data:await verify(getToken(ctx)),
     }
 });

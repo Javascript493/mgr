@@ -124,6 +124,17 @@ export default defineComponent({
                 editForm.current.character = editForm.character
             })
         }
+
+
+        const onUploadChange = ({file})=>{
+            if(file.response){
+                result(file.response)
+                .success(async(key)=>{
+
+                    const res = await user.addMany(key);
+                });
+            }
+        }
         return {
             list,
             curPage,
@@ -144,7 +155,8 @@ export default defineComponent({
             showEditCharacterModal,
             editForm,
             characterInfo : store.state.characterInfo,
-            updateCharacter
+            updateCharacter,
+            onUploadChange
         }
     }
 });

@@ -1,5 +1,10 @@
 export default [
     {
+        title: '总览',
+        url:'/dashboard',
+        onlyAdmin: true,
+    },
+    {
         title: '材料管理',
         url:'/main',
         onlyAdmin: false,

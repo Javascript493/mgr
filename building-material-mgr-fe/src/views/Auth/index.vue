@@ -67,7 +67,6 @@
         </a-tab-pane>
       </a-tabs>
     </div>
-    <!-- <a-button type="primary">Primary Button</a-button> -->
   </div>
 </template>
 

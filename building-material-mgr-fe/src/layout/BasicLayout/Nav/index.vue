@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nav">
     <a-menu
       style="width: 100%"
       v-model:openKeys="openKeys"
@@ -9,9 +9,7 @@
       v-only-admin="item.onlyAdmin"
     >
       <a-sub-menu v-if="item.children">
-        <!-- <template #icon>
-          <MailOutlined />
-        </template> -->
+
         <template #title>{{item.title}}</template>
 
         <a-menu-item 
@@ -20,15 +18,7 @@
         @click="to(child.url)">
             {{child.title}}
         </a-menu-item>
-        <!-- <a-menu-item-group key="g1">
-          <template #icon>
-            <QqOutlined />
-          </template>
-          <template #title>Item 1</template>
-          <a-menu-item key="1">Option 1</a-menu-item>
-          <a-menu-item key="2">Option 2</a-menu-item>
-        </a-menu-item-group> -->
-        
+
       </a-sub-menu>
 
         <a-menu-item @click="to(item.url)" :key="item.url" v-else>

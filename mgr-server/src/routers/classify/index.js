@@ -26,7 +26,7 @@ router.post('/add',async(ctx)=>{
     if(one ){
         ctx.body ={
             code:0,
-            msg:'书籍分类已存在'
+            msg:'材料分类已存在'
         }
         return;
     }

@@ -32,11 +32,11 @@ router.post('/register', async (ctx) => {
     }
 
     //寻找有没有邀请码
-    const finCode = await InviteCode.findOne({
+    const findCode = await InviteCode.findOne({
         code: inviteCode
     }).exec();
     
-    if(!finCode || finCode.user){
+    if(!findCode || findCode.user){
         ctx.body = {
             code: 0,
             msg: '邀请码不正确',

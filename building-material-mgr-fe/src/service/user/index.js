@@ -36,3 +36,9 @@ export const info = ()=>{
     return axios.get('http://localhost:3000/user/info')
 }
 
+export const addMany = (key)=>{
+    return axios.post('http://localhost:3000/user/addMany',{
+        key
+    })
+}
+

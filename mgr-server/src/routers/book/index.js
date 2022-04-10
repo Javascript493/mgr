@@ -97,7 +97,6 @@ router.get('/list',async(ctx)=>{
 router.delete('/:id',async(ctx)=>{
     const { id } =ctx.params;
 
-    
     const delMsg = await Book.deleteOne({
         _id:id,
     }).exec();
@@ -105,8 +104,8 @@ router.delete('/:id',async(ctx)=>{
         data:delMsg,
         msg:'删除成功',
         code:1
-    };
-})
+    }
+});
 
 //出入库的接口 同时将出入库的数据存入InventoryLog中去
 router.post('/update/count',async(ctx)=>{
@@ -116,9 +115,6 @@ router.post('/update/count',async(ctx)=>{
     num = Number(num);
 
     const book = await findBookOne(id);
-    // const book = await Book.findOne({
-    //     _id:id,
-    // }).exec();
 
     if(!book){
         ctx.body={

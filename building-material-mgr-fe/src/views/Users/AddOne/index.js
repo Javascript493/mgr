@@ -26,11 +26,8 @@ export default defineComponent({
 
         const submit =async ()=>{
             const form = clone(addForm);
-            
             const res = await user.add(form.account,form.password,form.character);
-
             result(res)
-            //等于是说将 d=data , {data} = res
             .success((d,{ data })=>{
                 //清空表单
                 Object.assign(addForm,defaultFormData);

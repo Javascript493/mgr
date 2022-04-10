@@ -12,7 +12,10 @@ import Update from './Update/index.vue'
 
 export default defineComponent({
     components: { AddOne,Update },
-    setup() {
+    props:{
+        simple:Boolean
+    },
+    setup(props) {
         const router = useRouter();
         const columns = [
             {
@@ -48,14 +51,16 @@ export default defineComponent({
                     customRender: 'publishDate'
                 }
             },
-            {
+
+        ];
+        if(!props.simple){
+            columns.push(            {
                 title: '操作',
                 slots: {
                     customRender: 'actions'
                 }
-            },
-        ];
-
+            })
+        }
 
         const show = ref(false);
         const showUpdateModal = ref(false);
@@ -202,7 +207,8 @@ export default defineComponent({
             updateCurBook,
             toDetail,
             getList,
-            getClassifyTitleById
+            getClassifyTitleById,
+            simple :props.simple
         
         }
     }

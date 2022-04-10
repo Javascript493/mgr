@@ -89,27 +89,14 @@ export default defineComponent({
          result(res)
          .success(({ msg, data: { user ,token}})=>{
             message.success(msg)
-            //登录成功后将用户信息传入store
-            // store.commit('setUserInfo',user);
-            // store.commit('setUserCharacter',getCharacterInfoById(user.character));
-
-            // setToken(token);
-            // router.replace('/main');
-
             const p = new Promise((resolve)=>{
-               // store.commit('setUserInfo',user);
-               // store.commit('setUserCharacter',getCharacterInfoById(user.character));
                store.dispatch('setUserInfo',user)
                store.dispatch('setUserCharacter',getCharacterInfoById(user.character))
                resolve();
                 
             });
-            //将用户数据作为全局数据
-            
-            //根据用户的character属性 来查询用户是管理员还是普通用户，并获得相关权限信息
             p.then(async()=>{
-               await setToken(token);
-               
+               await setToken(token); 
                await router.replace('/main');
             });
 

@@ -16,9 +16,8 @@ router.get('/list',async(ctx)=>{
         code:1,
         data:list,
         msg:'获取列表成功',
-
     }
-})
+});
 
 
 module.exports = router;

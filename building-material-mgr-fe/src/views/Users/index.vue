@@ -16,7 +16,13 @@
           <a href="javascript:;" @click="searchBack" v-if="isSearch">返回</a>
         </div>
 
-        <a-button @click="showAddModal = true">添加用户</a-button>
+        <div>
+          <a-button @click="showAddModal = true">添加用户</a-button>
+          &nbsp;
+          <a-upload action="http://localhost:3000/upload/file" @change="onUploadChange">
+            <a-button @click="upload" type="primary">上传EXCEL添加</a-button>
+          </a-upload>
+        </div>
       </space-between>
 
       <a-divider />
@@ -33,10 +39,10 @@
           </template>
 
           <template #character="{ record }">
-            <a href="javascript:;"  @click="onEdit(record)" ><EditOutlined /></a>
+            <a href="javascript:;" @click="onEdit(record)"><EditOutlined /></a>
             {{ getCharacterInfoById(record.character).title }}
           </template>
-          
+
           <template #actions="{ record }">
             <a href="javascript:;" @click="resetPassword(record)">重置密码</a>
 
@@ -64,7 +70,11 @@
 
     <add-one v-model:show="showAddModal" @getList="getUser" />
 
-    <a-modal v-model:visible="showEditCharacterModal" title="修改角色" @ok="updateCharacter">
+    <a-modal
+      v-model:visible="showEditCharacterModal"
+      title="修改角色"
+      @ok="updateCharacter"
+    >
       <a-select v-model:value="editForm.character" style="width: 200px">
         <a-select-option
           v-for="item in characterInfo"

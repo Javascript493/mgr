@@ -14,7 +14,12 @@ connect().then(() => {
     //处理跨域
     app.use(cors());
     //处理请求体
-    app.use(koaBody());
+    app.use(koaBody({
+        multipart:true,
+        formidable:{
+            maxFileSize:200*1024*1024,
+        }
+    }));
     // app.use(catchTokenError);
     // koaJwtMiddleware(app);
 

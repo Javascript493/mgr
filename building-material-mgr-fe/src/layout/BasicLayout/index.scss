@@ -2,7 +2,9 @@
     height: 64px;
     width: 100%;
 }
-
+.basic-layout{
+    overflow-x: scroll;
+}
 .app-header {
     height: 64px;
     position: fixed;
