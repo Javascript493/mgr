@@ -12,7 +12,13 @@ export default defineComponent({
 
         onMounted(()=>{
             selectedKeys.value = [route.path];
-            
+            menu.forEach((item)=>{
+                (item.children || []).forEach((child)=>{
+                    if(child.url === route.path){
+                        openKeys.value= (item.title);
+                    }
+                });
+            });
         });
         const to =(url)=>{
             router.push(url);

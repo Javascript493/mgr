@@ -5,7 +5,7 @@ const { connect } = require('./db')
 //这里^ v 的代码顺序不能乱 因为要先注册UserSchema 然后 在去引用它 这样的逻辑
 const registerRouter = require('./routers')
 const cors = require('@koa/cors')
-const { middleware :koaJwtMiddleware ,catchTokenError} = require('./helpers/token')
+const { middleware :koaJwtMiddleware ,catchTokenError,checkUser} = require('./helpers/token')
 const { logMiddleware} =require('./helpers/log')
 const app = new koa();
 
@@ -20,8 +20,10 @@ connect().then(() => {
             maxFileSize:200*1024*1024,
         }
     }));
-    // app.use(catchTokenError);
-    // koaJwtMiddleware(app);
+    app.use(catchTokenError);
+    koaJwtMiddleware(app);
+
+    app.use(checkUser);
 
     app.use(logMiddleware);
     //注册路由

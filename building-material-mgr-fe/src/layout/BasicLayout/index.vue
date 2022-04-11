@@ -6,8 +6,8 @@
                 <h2>建材销售管理系统</h2>
             </div>
             <div class="right">
-                <div class="hello-msg">你好 XXX</div>
-                <div class="logout">退出</div>
+                <div class="hello-msg">{{`你好 ${userName}`}}</div>
+                <div class="logout" @click="logout">退出</div>
             </div>
         </div>
         <div class="app-header-placeholder"></div>

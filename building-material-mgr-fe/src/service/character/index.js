@@ -1,9 +1,8 @@
-//访问出入库相关的接口的方法list
-import axios from "axios"
+import { get } from '@/helpers/request';
+
 export const list = ()=>{
-    return axios.get(
-        'http://localhost:3000/character/list',
-        
+    return get(
+        '/character/list',
     );
 }
 

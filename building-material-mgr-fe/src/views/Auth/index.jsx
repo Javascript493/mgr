@@ -86,17 +86,23 @@ export default defineComponent({
          }
          
          const res = await auth.login(loginForm.account,loginForm.password);
+
          result(res)
          .success(({ msg, data: { user ,token}})=>{
             message.success(msg)
-            const p = new Promise((resolve)=>{
+            const p = new Promise(async(resolve)=>{
+
+               await setToken(token); 
+               
+               await store.dispatch('getCharacterInfo');
+
                store.dispatch('setUserInfo',user)
                store.dispatch('setUserCharacter',getCharacterInfoById(user.character))
                resolve();
                 
             });
             p.then(async()=>{
-               await setToken(token); 
+               
                await router.replace('/main');
             });
 

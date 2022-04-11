@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const config = require('../../project.config')
 const koaJwt = require('koa-jwt')
+const mongoose = require('mongoose')
+
+const User = mongoose.model('User');
 
 
 const getToken = (ctx)=>{
@@ -19,7 +22,7 @@ const verify = (token)=>{
             //返回解析后的结果
             resolve(payload);
         });
-    })
+    });
 }
 
 const middleware = (app)=>{
@@ -29,9 +32,44 @@ const middleware = (app)=>{
     }).unless({
         path:[ 
             /^\/auth\/login/,
-            /^\/auth\/register/
+            /^\/auth\/register/,
+            /^\/forget-password\/add/
         ]
     }));
+}
+
+const res401 =(ctx)=>{
+    ctx.status = 401;
+    ctx.body ={
+        code:0,
+        msg:'用户校验失败'
+    }
+}
+
+const checkUser = async(ctx,next)=>{
+    const { path } = ctx;
+    if(path === '/auth/login' || path === '/auth/register' || path === '/forget-password/add'){
+        await next();
+        return;
+    }
+    const { id ,account,character } = await verify(getToken(ctx));
+
+    const user = await User.findOne({_id:id}).exec();
+
+    if(!user){
+        res401(ctx);
+        return;
+    }
+
+    if(account !== user.account){
+        res401(ctx);
+        return;
+    }
+    if(character !== user.character){
+        res401(ctx);
+        return;
+    }
+    await next();
 }
 
 const catchTokenError = async(ctx,next)=>{
@@ -53,5 +91,6 @@ module.exports = {
     verify,
     getToken,
     middleware,
-    catchTokenError
+    catchTokenError,
+    checkUser
 }

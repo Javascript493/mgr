@@ -6,7 +6,7 @@ import AddOne from "./AddOne/index.vue";
 import { getCharacterInfoById } from "@/helpers/character";
 import { EditOutlined } from '@ant-design/icons-vue'
 import store from "@/store";
-
+import { getHeaders } from "@/helpers/request";
 const columns = [
     {
         title:'账户',
@@ -126,12 +126,18 @@ export default defineComponent({
         }
 
 
+
         const onUploadChange = ({file})=>{
             if(file.response){
                 result(file.response)
                 .success(async(key)=>{
 
                     const res = await user.addMany(key);
+                    result(res)
+                    .success(({data:{account}})=>{
+                        message.success(`成功添加 ${account}名用户`);
+                        getUser();
+                    })
                 });
             }
         }
@@ -156,7 +162,8 @@ export default defineComponent({
             editForm,
             characterInfo : store.state.characterInfo,
             updateCharacter,
-            onUploadChange
+            onUploadChange,
+            headers:getHeaders(),
         }
     }
 });

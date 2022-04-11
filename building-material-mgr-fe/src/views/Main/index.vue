@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :title="simple? '最近添加的材料' : '' ">
+    <a-card :title="simple ? '最近添加的材料' : ''">
       <div v-if="!simple">
         <h2>建筑材料列表</h2>
         <a-divider />
@@ -15,7 +15,18 @@
             />
             <a href="javascript:;" @click="searchBack" v-if="isSearch">返回</a>
           </div>
-          <a-button @click="show = true" v-only-admin>添加一条</a-button>
+
+          <div>
+            <a-button @click="show = true" v-only-admin>添加一条</a-button>
+            &nbsp;
+            <a-upload
+              action="http://localhost:3000/upload/file"
+              @change="onUploadChange"
+              :headers="headers"
+            >
+              <a-button type="primary">上传EXCEL添加</a-button>
+            </a-upload>
+          </div>
         </space-between>
 
         <a-divider />
@@ -56,7 +67,7 @@
 
       <space-between style="margin-top: 24px" v-if="!simple">
         <div></div>
-        <a-pagination 
+        <a-pagination
           v-model:current="curPage"
           @change="setPage"
           :total="total"
