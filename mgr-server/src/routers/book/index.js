@@ -1,7 +1,7 @@
 const Router = require('@koa/router');
 const mongoose = require('mongoose')
 const { getBody } = require('../../helpers/utils')
-const { loadExcel , getFirstSheet } = require('../../helpers/excel')
+const { loadExcel, getFirstSheet } = require('../../helpers/excel')
 const Book = mongoose.model('Book');
 const InventoryLog = mongoose.model('InventoryLog')
 const Classify = mongoose.model('Classify')
@@ -220,7 +220,10 @@ router.post('/addMany', async (ctx) => {
     const sheet = getFirstSheet(excel);
 
     const arr = [];
-    sheet.forEach((record) => {
+
+    for (let i = 0; i < sheet.length; i++) {
+        let record = sheet[i];
+
         const [
             name,
             price,
@@ -231,30 +234,29 @@ router.post('/addMany', async (ctx) => {
         ] = record;
 
         let classifyId = classify;
-
-        const one  = Classify.findOne({
-            title : classify
-        });
-
+        const one = await Classify.findOne({title:classify});
+        
         if(one){
-            classifyId =one._id;
+            classifyId = one._id;
         }
+        console.log(12313131312313);
+        console.log(classifyId)
         arr.push({
             name,
             price,
+            classify:classifyId,
             author,
             publishDate,
-            classify :classifyId,
             count,
-        });
     });
+    }
     await Book.insertMany(arr);
 
     ctx.body = {
         code: 1,
         msg: '添加成功',
-        data:{
-            addCount:arr.length
+        data: {
+            addCount: arr.length
         }
     }
 });
