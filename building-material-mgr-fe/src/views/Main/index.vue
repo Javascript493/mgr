@@ -20,7 +20,7 @@
             <a-button @click="show = true" v-only-admin>添加一条</a-button>
             &nbsp;
             <a-upload
-              action="http://localhost:3000/upload/file"
+              action="/upload/file"
               @change="onUploadChange"
               :headers="headers"
             >
@@ -37,6 +37,7 @@
         :data-source="list"
         :pagination="false"
         bordered
+        :scroll="{ x: 'max-content' }"
       >
         <template #publishDate="data">
           {{ formatTimeStamp(data.record.publishDate) }}

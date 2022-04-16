@@ -19,7 +19,7 @@
         <div>
           <a-button @click="showAddModal = true">添加用户</a-button>
           &nbsp;
-          <a-upload action="http://localhost:3000/upload/file" 
+          <a-upload action="/upload/file" 
           @change="onUploadChange"
           :headers="headers">
             <a-button type="primary">上传EXCEL添加</a-button>
