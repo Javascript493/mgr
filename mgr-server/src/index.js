@@ -35,7 +35,7 @@ connect().then(() => {
     //开启一个http服务
     //接收http请求 并做处理 然后响应
     //这里是异步操作 先连端口再监听
-    app.listen(3000, () => {
+    app.listen(3001, () => {
         console.log('启动成功')
     });
 })
